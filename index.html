@@ -20,7 +20,6 @@
       --accent: #c4a265;
       --accent-light: #e8d5b0;
       --accent-dark: #8b6914;
-      --purple: #7c6f64;
       --red: #c97d60;
       --green: #7a9a7e;
       --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
@@ -151,6 +150,12 @@
       font-size: 0.78rem;
       color: var(--text-secondary);
       font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .status-tag:hover {
+      background: #ebe7e0;
     }
 
     .status-tag .dot {
@@ -243,6 +248,17 @@
       background: #1a1a1a;
       transform: translateY(-1px);
       box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--text-secondary);
+      border: 1.5px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: var(--surface-alt);
+      border-color: #ccc;
     }
 
     /* 对话区域 */
@@ -447,10 +463,26 @@
       color: var(--text-tertiary);
       letter-spacing: 0.03em;
       font-weight: 400;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.8rem;
     }
 
     .footer-note span {
       color: var(--accent-dark);
+    }
+
+    .privacy-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.15rem 0.6rem;
+      border-radius: 100px;
+      background: rgba(122, 154, 126, 0.1);
+      color: var(--green);
+      font-size: 0.65rem;
+      font-weight: 500;
     }
 
     /* 响应式 */
@@ -507,6 +539,11 @@
       .logo-title {
         font-size: 1.1rem;
       }
+
+      .footer-note {
+        flex-wrap: wrap;
+        gap: 0.4rem;
+      }
     }
   </style>
 </head>
@@ -523,9 +560,10 @@
           <div class="logo-subtitle">Rongxian · Sichuan</div>
         </div>
       </div>
-      <div class="status-tag" id="statusTag">
+      <div class="status-tag" id="statusTag" title="点击清空当前会话">
         <span class="dot" id="statusDot"></span>
         <span id="statusText">就绪</span>
+        <i class="fas fa-chevron-down" style="font-size:0.6rem;opacity:0.5;"></i>
       </div>
     </header>
 
@@ -554,7 +592,7 @@
           我是<span style="color: var(--accent-dark); font-weight: 500;">荣县百事通</span>，一个植根于川南的AI助手。<br>
           无论你想探寻荣县大佛的千年古韵，品尝地道豆花的嫩滑鲜香，<br>
           或是聊聊其他任何话题——我都在这里。<br><br>
-          <span style="color: var(--text-tertiary); font-size: 0.82rem;">配置API密钥后即可开始对话。</span>
+          <span style="color: var(--text-tertiary); font-size: 0.82rem;">配置API密钥后即可开始对话。<br>会话不会保存，离开即清空，守护每位使用者的隐私。</span>
         </div>
       </div>
     </div>
@@ -567,7 +605,7 @@
           placeholder="提问任何话题，或聊聊荣县..." 
           rows="1"
         ></textarea>
-        <button class="icon-btn btn-clear" id="clearChatBtn" title="清空对话">
+        <button class="icon-btn btn-clear" id="clearChatBtn" title="清空当前会话">
           <i class="fas fa-undo-alt"></i>
         </button>
         <button class="icon-btn btn-send" id="sendBtn" title="发送">
@@ -575,16 +613,20 @@
         </button>
       </div>
       <div class="footer-note">
-        本地存储 · 端到端加密 · <span>荣县</span>
+        <span>荣县</span>
+        <span class="privacy-badge">
+          <i class="fas fa-shield-alt" style="font-size:0.55rem;"></i>
+          无痕会话
+        </span>
+        <span>本地存储 · 端到端加密</span>
       </div>
     </div>
   </div>
 
   <script>
     (function() {
-      // ============ 荣县知识库 ============
+      // ============ 荣县知识库（仅用于系统提示词，不存储对话） ============
       const RONGXIAN_CONTEXT = {
-        overview: "荣县，古称荣州，位于四川盆地南部，隶属自贡市。这里是千年古县，世界第一大释迦牟尼佛石刻像——荣县大佛的所在地，也是中国诗书之乡。",
         highlights: [
           { name: "荣县大佛", detail: "唐代凿刻，通高36.67米，全国重点文物保护单位，气势恢宏。" },
           { name: "高石梯森林公园", detail: "国家AAAA级景区，森林覆盖率98%，清幽宁静的天然氧吧。" },
@@ -645,10 +687,10 @@ ${RONGXIAN_CONTEXT.highlights.map(h => `- ${h.name}：${h.detail}`).join('\n')}
         return { 'Content-Type': 'application/json', 'Authorization': `Bearer ${key}` };
       }
 
-      // ============ 状态 ============
-      let history = [];
-      let apiKey = localStorage.getItem('ai_api_key') || '';
-      let provider = localStorage.getItem('ai_provider') || 'deepseek';
+      // ============ 状态管理（仅内存，不持久化） ============
+      let conversationHistory = [];  // 仅当前会话，不保存到localStorage
+      let apiKey = localStorage.getItem('ai_api_key') || '';  // 仅密钥保存
+      let provider = localStorage.getItem('ai_provider') || 'deepseek';  // 仅提供商保存
 
       const $chat = document.getElementById('chatArea');
       const $input = document.getElementById('userInput');
@@ -659,6 +701,7 @@ ${RONGXIAN_CONTEXT.highlights.map(h => `- ${h.name}：${h.detail}`).join('\n')}
       const $saveKey = document.getElementById('saveApiKeyBtn');
       const $statusDot = document.getElementById('statusDot');
       const $statusText = document.getElementById('statusText');
+      const $statusTag = document.getElementById('statusTag');
 
       function updateStatus() {
         if (apiKey) {
@@ -713,7 +756,7 @@ ${RONGXIAN_CONTEXT.highlights.map(h => `- ${h.name}：${h.detail}`).join('\n')}
 
         const messages = [
           { role: 'system', content: buildSystemPrompt() },
-          ...history.slice(-10),
+          ...conversationHistory.slice(-10),  // 仅使用当前会话的历史
           { role: 'user', content: userMsg }
         ];
 
@@ -730,8 +773,13 @@ ${RONGXIAN_CONTEXT.highlights.map(h => `- ${h.name}：${h.detail}`).join('\n')}
 
         const data = await res.json();
         const reply = data.choices[0]?.message?.content || '未获取到回复。';
-        history.push({ role: 'user', content: userMsg }, { role: 'assistant', content: reply });
-        saveHistory();
+        
+        // 仅保存到内存中的当前会话
+        conversationHistory.push(
+          { role: 'user', content: userMsg },
+          { role: 'assistant', content: reply }
+        );
+        
         return reply;
       }
 
@@ -763,30 +811,16 @@ ${RONGXIAN_CONTEXT.highlights.map(h => `- ${h.name}：${h.detail}`).join('\n')}
         }
       }
 
-      function saveHistory() {
-        try { localStorage.setItem('ai_conversation', JSON.stringify(history.slice(-20))); } catch(e) {}
-      }
-
-      function loadHistory() {
-        try {
-          const saved = localStorage.getItem('ai_conversation');
-          if (saved) {
-            history = JSON.parse(saved);
-            history.slice(-6).forEach(m => { if (m.role === 'user' || m.role === 'assistant') addMessage(m.role, m.content); });
-          }
-        } catch(e) { history = []; }
-      }
-
-      function clearChat() {
-        if (confirm('清空对话记录？')) {
-          history = [];
-          localStorage.removeItem('ai_conversation');
+      // 清空当前会话（仅清空内存中的历史记录和界面）
+      function clearCurrentSession() {
+        if (confirm('清空当前会话？此操作不可恢复。')) {
+          conversationHistory = [];  // 清空内存中的对话历史
           $chat.innerHTML = '';
-          addMessage('assistant', '对话已清空。有什么想聊的？');
+          addMessage('assistant', '会话已清空。对话历史不会保存，每位使用者都将获得全新的对话体验。有什么想聊的？');
         }
       }
 
-      // 事件
+      // 事件监听
       $send.addEventListener('click', send);
       $input.addEventListener('keydown', e => {
         if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
@@ -795,26 +829,38 @@ ${RONGXIAN_CONTEXT.highlights.map(h => `- ${h.name}：${h.detail}`).join('\n')}
         $input.style.height = 'auto';
         $input.style.height = Math.min($input.scrollHeight, 120) + 'px';
       });
-      $clear.addEventListener('click', clearChat);
+      $clear.addEventListener('click', clearCurrentSession);
+      
+      // 点击状态标签也可以清空会话
+      $statusTag.addEventListener('click', clearCurrentSession);
+      
       $saveKey.addEventListener('click', () => {
         const k = $apiKeyInput.value.trim();
         if (k) {
           apiKey = k;
           provider = $provider.value;
-          localStorage.setItem('ai_api_key', k);
-          localStorage.setItem('ai_provider', provider);
+          localStorage.setItem('ai_api_key', k);  // 仅保存密钥
+          localStorage.setItem('ai_provider', provider);  // 仅保存提供商选择
           updateStatus();
-          addNotice('密钥已保存，随时可以开始对话。');
+          addNotice('密钥已保存（仅密钥会被存储，对话历史不会保留）。');
         } else {
           addNotice('请输入有效的API密钥。');
         }
+      });
+
+      // 页面关闭/刷新前清空会话（额外的安全保障）
+      window.addEventListener('beforeunload', () => {
+        // 不做任何保存操作
+        conversationHistory = [];
       });
 
       // 初始化
       $apiKeyInput.value = apiKey;
       $provider.value = provider;
       updateStatus();
-      loadHistory();
+      
+      console.log('🏯 荣县百事通已启动 | 无痕会话模式 | 对话历史不会保存');
+      console.log('💡 仅API密钥会保存在本地，对话记录仅在内存中，关闭页面即清空');
     })();
   </script>
 </body>
