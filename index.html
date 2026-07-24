@@ -3,12 +3,38 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-  <title>智能AI助手 | 真正的大模型对话</title>
+  <title>荣县百事通 | AI智能助手</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
+    :root {
+      --bg: #faf8f5;
+      --surface: #ffffff;
+      --surface-alt: #f5f3ef;
+      --text: #2c2c2c;
+      --text-secondary: #6b6b6b;
+      --text-tertiary: #999999;
+      --border: #e8e4dd;
+      --accent: #c4a265;
+      --accent-light: #e8d5b0;
+      --accent-dark: #8b6914;
+      --purple: #7c6f64;
+      --red: #c97d60;
+      --green: #7a9a7e;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 16px rgba(0,0,0,0.06);
+      --shadow-lg: 0 12px 40px rgba(0,0,0,0.08);
+      --radius-sm: 8px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --radius-xl: 32px;
+      --font-serif: 'Noto Serif SC', 'STSong', 'SimSun', 'Songti SC', serif;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --transition: 0.35s cubic-bezier(0.25, 0.1, 0.25, 1);
+    }
+
     * {
       margin: 0;
       padding: 0;
@@ -16,257 +42,344 @@
     }
 
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      font-family: var(--font-sans);
+      background: #ede8e0;
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 1rem;
+      padding: 1.5rem;
+      position: relative;
+    }
+
+    /* 背景纹理 */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: 
+        radial-gradient(ellipse at 20% 80%, rgba(196, 162, 101, 0.06) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(124, 111, 100, 0.04) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(196, 162, 101, 0.03) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
     }
 
     .app-container {
       width: 100%;
-      max-width: 900px;
-      height: 90vh;
-      max-height: 850px;
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(20px);
-      border-radius: 24px;
+      max-width: 800px;
+      height: 88vh;
+      max-height: 800px;
+      background: var(--surface);
+      border-radius: var(--radius-xl);
       display: flex;
       flex-direction: column;
       overflow: hidden;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
+      box-shadow: var(--shadow-lg), 0 0 0 1px rgba(0,0,0,0.04);
+      position: relative;
+      z-index: 1;
     }
 
-    /* 头部 */
+    /* 头部 - 极简东方美学 */
     .app-header {
-      padding: 1.5rem 2rem;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
+      padding: 1.6rem 2rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 1rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
     }
 
     .logo-area {
       display: flex;
       align-items: center;
-      gap: 0.8rem;
+      gap: 1rem;
     }
 
-    .logo-icon {
-      font-size: 2rem;
-      background: rgba(255, 255, 255, 0.2);
-      width: 48px;
-      height: 48px;
+    .logo-mark {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-sm);
+      background: linear-gradient(135deg, #c4a265 0%, #8b6914 100%);
       display: flex;
       align-items: center;
       justify-content: center;
-      border-radius: 14px;
+      color: white;
+      font-size: 1.1rem;
+      position: relative;
     }
 
-    .logo-text {
-      font-size: 1.5rem;
+    .logo-mark::after {
+      content: '';
+      position: absolute;
+      inset: -3px;
+      border-radius: 11px;
+      border: 1.5px solid rgba(196, 162, 101, 0.3);
+      opacity: 0.6;
+    }
+
+    .logo-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .logo-title {
+      font-family: var(--font-serif);
+      font-size: 1.25rem;
       font-weight: 600;
-      letter-spacing: -0.5px;
+      color: var(--text);
+      letter-spacing: 0.02em;
+      line-height: 1.3;
     }
 
-    .model-badge {
-      background: rgba(255, 255, 255, 0.2);
-      padding: 0.5rem 1rem;
-      border-radius: 20px;
-      font-size: 0.85rem;
+    .logo-subtitle {
+      font-size: 0.7rem;
+      color: var(--text-tertiary);
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-family: var(--font-sans);
+    }
+
+    .status-tag {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
-      backdrop-filter: blur(10px);
+      gap: 0.45rem;
+      padding: 0.4rem 0.9rem;
+      border-radius: 100px;
+      background: var(--surface-alt);
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    .status-tag .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+    }
+
+    .status-tag .dot.offline {
+      background: #d4a373;
     }
 
     /* 设置面板 */
-    .settings-panel {
+    .settings-bar {
       padding: 1rem 2rem;
-      background: #f8f9ff;
-      border-bottom: 1px solid #e8ecf1;
       display: flex;
-      gap: 1rem;
+      gap: 0.6rem;
       align-items: center;
-      flex-wrap: wrap;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
     }
 
-    .api-key-input {
+    .input-field {
       flex: 1;
-      min-width: 200px;
+      min-width: 0;
       padding: 0.6rem 1rem;
-      border: 2px solid #e0e4f0;
-      border-radius: 12px;
-      font-size: 0.9rem;
+      border: 1.5px solid var(--border);
+      border-radius: 100px;
+      font-size: 0.85rem;
       outline: none;
-      transition: border-color 0.3s;
-      font-family: 'Inter', sans-serif;
+      background: var(--surface-alt);
+      color: var(--text);
+      font-family: var(--font-sans);
+      transition: var(--transition);
     }
 
-    .api-key-input:focus {
-      border-color: #667eea;
+    .input-field:focus {
+      border-color: var(--accent);
+      background: var(--surface);
+      box-shadow: 0 0 0 3px rgba(196, 162, 101, 0.08);
     }
 
-    .provider-select {
-      padding: 0.6rem 1rem;
-      border: 2px solid #e0e4f0;
-      border-radius: 12px;
-      font-size: 0.9rem;
+    .input-field::placeholder {
+      color: var(--text-tertiary);
+    }
+
+    .select-field {
+      padding: 0.6rem 2rem 0.6rem 1rem;
+      border: 1.5px solid var(--border);
+      border-radius: 100px;
+      font-size: 0.85rem;
       outline: none;
-      background: white;
+      background: var(--surface-alt);
+      color: var(--text);
       cursor: pointer;
-      font-family: 'Inter', sans-serif;
+      font-family: var(--font-sans);
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23999' viewBox='0 0 16 16'%3E%3Cpath d='M8 10L4 6h8l-4 4z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.8rem center;
+      transition: var(--transition);
+      white-space: nowrap;
     }
 
-    .save-btn {
-      padding: 0.6rem 1.5rem;
-      background: #667eea;
-      color: white;
+    .select-field:focus {
+      border-color: var(--accent);
+      background: var(--surface);
+    }
+
+    .btn {
+      padding: 0.6rem 1.3rem;
       border: none;
-      border-radius: 12px;
+      border-radius: 100px;
       cursor: pointer;
       font-weight: 500;
-      transition: all 0.3s;
-      font-family: 'Inter', sans-serif;
-    }
-
-    .save-btn:hover {
-      background: #5a67d8;
-      transform: translateY(-1px);
-    }
-
-    .status-indicator {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
       font-size: 0.85rem;
-      color: #48bb78;
+      font-family: var(--font-sans);
+      transition: var(--transition);
+      white-space: nowrap;
+      letter-spacing: 0.01em;
     }
 
-    .status-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: #48bb78;
+    .btn-primary {
+      background: var(--text);
+      color: white;
     }
 
-    /* 聊天区域 */
-    .chat-messages {
+    .btn-primary:hover {
+      background: #1a1a1a;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    /* 对话区域 */
+    .chat-area {
       flex: 1;
       overflow-y: auto;
       padding: 2rem;
       display: flex;
       flex-direction: column;
-      gap: 1.5rem;
-      background: #fafbff;
+      gap: 1.8rem;
+      background: var(--bg);
+      scroll-behavior: smooth;
     }
 
-    .message-row {
+    .chat-area::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .chat-area::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .chat-area::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 10px;
+    }
+
+    .message {
       display: flex;
-      gap: 1rem;
-      animation: slideIn 0.3s ease-out;
+      gap: 0.9rem;
+      animation: fadeUp 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+      max-width: 100%;
     }
 
-    .message-row.user {
+    .message.user {
       flex-direction: row-reverse;
     }
 
-    .avatar {
-      width: 40px;
-      height: 40px;
-      border-radius: 12px;
+    @keyframes fadeUp {
+      from { 
+        opacity: 0; 
+        transform: translateY(16px); 
+      }
+      to { 
+        opacity: 1; 
+        transform: translateY(0); 
+      }
+    }
+
+    .msg-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      font-size: 1.1rem;
+      font-size: 0.85rem;
     }
 
-    .assistant .avatar {
-      background: linear-gradient(135deg, #667eea, #764ba2);
+    .assistant .msg-avatar {
+      background: var(--accent-light);
+      color: var(--accent-dark);
+    }
+
+    .user .msg-avatar {
+      background: var(--text);
       color: white;
     }
 
-    .user .avatar {
-      background: #48bb78;
-      color: white;
-    }
-
-    .bubble {
-      max-width: 75%;
+    .msg-bubble {
+      max-width: 72%;
       padding: 1rem 1.3rem;
-      border-radius: 18px;
-      line-height: 1.6;
-      font-size: 0.95rem;
-      word-wrap: break-word;
+      border-radius: var(--radius-md);
+      line-height: 1.75;
+      font-size: 0.9rem;
+      color: var(--text);
+      letter-spacing: 0.01em;
     }
 
-    .assistant .bubble {
-      background: white;
-      color: #2d3748;
-      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-      border-bottom-left-radius: 6px;
+    .assistant .msg-bubble {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-top-left-radius: 4px;
+      box-shadow: var(--shadow-sm);
     }
 
-    .user .bubble {
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      color: white;
-      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-      border-bottom-right-radius: 6px;
+    .user .msg-bubble {
+      background: var(--text);
+      color: #f5f3ef;
+      border-top-right-radius: 4px;
     }
 
-    .typing-indicator {
+    .typing-dots {
       display: flex;
-      gap: 0.3rem;
-      padding: 0.5rem 0;
+      gap: 5px;
+      padding: 0.3rem 0;
     }
 
-    .typing-dot {
-      width: 8px;
-      height: 8px;
+    .typing-dots span {
+      width: 6px;
+      height: 6px;
       border-radius: 50%;
-      background: #a0aec0;
-      animation: typing 1.4s infinite;
+      background: var(--text-tertiary);
+      animation: dotPulse 1.5s infinite;
     }
 
-    .typing-dot:nth-child(2) { animation-delay: 0.2s; }
-    .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+    .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
 
-    @keyframes typing {
-      0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
-      30% { transform: translateY(-10px); opacity: 1; }
-    }
-
-    @keyframes slideIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
+    @keyframes dotPulse {
+      0%, 60%, 100% { opacity: 0.25; transform: scale(0.8); }
+      30% { opacity: 1; transform: scale(1); }
     }
 
     /* 输入区域 */
     .input-area {
-      padding: 1.5rem 2rem;
-      background: white;
-      border-top: 1px solid #e8ecf1;
+      padding: 1.2rem 2rem 1.5rem;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
     }
 
-    .input-wrapper {
+    .input-row {
       display: flex;
-      gap: 1rem;
+      gap: 0.6rem;
       align-items: flex-end;
-      background: #f8f9ff;
-      border-radius: 16px;
-      padding: 0.8rem;
-      border: 2px solid #e8ecf1;
-      transition: border-color 0.3s;
+      background: var(--surface-alt);
+      border-radius: var(--radius-lg);
+      padding: 0.5rem 0.5rem 0.5rem 1.2rem;
+      border: 1.5px solid transparent;
+      transition: var(--transition);
     }
 
-    .input-wrapper:focus-within {
-      border-color: #667eea;
+    .input-row:focus-within {
+      border-color: var(--accent);
+      background: var(--surface);
+      box-shadow: 0 0 0 4px rgba(196, 162, 101, 0.06);
     }
 
     #userInput {
@@ -274,80 +387,125 @@
       border: none;
       outline: none;
       background: transparent;
-      font-size: 1rem;
-      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      font-family: var(--font-sans);
       resize: none;
       max-height: 120px;
-      padding: 0.5rem;
+      padding: 0.45rem 0;
+      color: var(--text);
+      line-height: 1.6;
     }
 
-    .action-buttons {
-      display: flex;
-      gap: 0.5rem;
+    #userInput::placeholder {
+      color: var(--text-tertiary);
+      font-style: italic;
     }
 
     .icon-btn {
-      width: 42px;
-      height: 42px;
+      width: 38px;
+      height: 38px;
       border: none;
-      border-radius: 12px;
+      border-radius: 50%;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.1rem;
-      transition: all 0.3s;
+      font-size: 0.95rem;
+      transition: var(--transition);
+      flex-shrink: 0;
     }
 
-    .send-btn {
-      background: linear-gradient(135deg, #667eea, #764ba2);
+    .btn-send {
+      background: var(--text);
       color: white;
     }
 
-    .send-btn:hover {
-      transform: scale(1.05);
-      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    .btn-send:hover:not(:disabled) {
+      background: #1a1a1a;
+      transform: scale(1.06);
     }
 
-    .send-btn:disabled {
-      opacity: 0.5;
+    .btn-send:disabled {
+      opacity: 0.35;
       cursor: not-allowed;
-      transform: none;
     }
 
-    .clear-btn {
-      background: #f0f0f0;
-      color: #666;
+    .btn-clear {
+      background: transparent;
+      color: var(--text-tertiary);
     }
 
-    .clear-btn:hover {
-      background: #e0e0e0;
+    .btn-clear:hover {
+      background: rgba(0,0,0,0.04);
+      color: var(--red);
     }
 
-    .safety-note {
+    .footer-note {
       text-align: center;
-      font-size: 0.75rem;
-      color: #a0aec0;
-      margin-top: 0.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.3rem;
+      margin-top: 0.6rem;
+      font-size: 0.7rem;
+      color: var(--text-tertiary);
+      letter-spacing: 0.03em;
+      font-weight: 400;
+    }
+
+    .footer-note span {
+      color: var(--accent-dark);
     }
 
     /* 响应式 */
-    @media (max-width: 768px) {
+    @media (max-width: 640px) {
+      body {
+        padding: 0;
+      }
+
       .app-container {
         height: 100vh;
         max-height: 100vh;
         border-radius: 0;
       }
-      .bubble {
-        max-width: 85%;
+
+      .app-header {
+        padding: 1.2rem 1.2rem;
       }
-      .settings-panel {
-        flex-direction: column;
-        align-items: stretch;
+
+      .settings-bar {
+        flex-wrap: wrap;
+        padding: 0.8rem 1.2rem;
+        gap: 0.5rem;
+      }
+
+      .input-field {
+        min-width: 140px;
+        flex: 2;
+      }
+
+      .select-field {
+        flex: 1;
+        min-width: 100px;
+      }
+
+      .btn {
+        padding: 0.55rem 1rem;
+        font-size: 0.8rem;
+      }
+
+      .chat-area {
+        padding: 1.2rem;
+        gap: 1.3rem;
+      }
+
+      .msg-bubble {
+        max-width: 82%;
+        font-size: 0.85rem;
+      }
+
+      .input-area {
+        padding: 0.8rem 1rem 1.2rem;
+      }
+
+      .logo-title {
+        font-size: 1.1rem;
       }
     }
   </style>
@@ -357,441 +515,306 @@
     <!-- 头部 -->
     <header class="app-header">
       <div class="logo-area">
-        <div class="logo-icon">
-          <i class="fas fa-brain"></i>
+        <div class="logo-mark">
+          <i class="fas fa-mountain"></i>
         </div>
-        <div class="logo-text">智能AI助手</div>
+        <div class="logo-info">
+          <div class="logo-title">荣县百事通</div>
+          <div class="logo-subtitle">Rongxian · Sichuan</div>
+        </div>
       </div>
-      <div class="model-badge">
-        <i class="fas fa-shield-alt"></i>
-        <span>安全对话模式</span>
+      <div class="status-tag" id="statusTag">
+        <span class="dot" id="statusDot"></span>
+        <span id="statusText">就绪</span>
       </div>
     </header>
 
-    <!-- API设置面板 -->
-    <div class="settings-panel" id="settingsPanel">
-      <select class="provider-select" id="providerSelect">
-        <option value="deepseek">DeepSeek (推荐)</option>
-        <option value="openai">OpenAI (GPT-3.5/4)</option>
-        <option value="custom">自定义API</option>
+    <!-- 设置栏 -->
+    <div class="settings-bar">
+      <select class="select-field" id="providerSelect">
+        <option value="deepseek">DeepSeek</option>
+        <option value="openai">OpenAI</option>
+        <option value="custom">自定义</option>
       </select>
       <input 
         type="password" 
-        class="api-key-input" 
+        class="input-field" 
         id="apiKeyInput" 
-        placeholder="输入您的API密钥 (仅在本地存储，不上传)"
+        placeholder="API 密钥"
       />
-      <button class="save-btn" id="saveApiKeyBtn">
-        <i class="fas fa-key"></i> 保存密钥
-      </button>
-      <div class="status-indicator" id="connectionStatus">
-        <span class="status-dot"></span>
-        <span>就绪</span>
-      </div>
+      <button class="btn btn-primary" id="saveApiKeyBtn">保存</button>
     </div>
 
-    <!-- 聊天消息 -->
-    <div class="chat-messages" id="chatMessages">
-      <div class="message-row assistant">
-        <div class="avatar">
-          <i class="fas fa-robot"></i>
-        </div>
-        <div class="bubble">
-          你好！我是真正的AI助手 🤖<br><br>
-          我基于大语言模型，可以进行智能对话、回答问题、创意写作等各种任务。<br><br>
-          <strong>开始使用：</strong><br>
-          1. 在顶部输入您的API密钥（支持DeepSeek、OpenAI等）<br>
-          2. 密钥仅保存在您的浏览器本地存储中<br>
-          3. 开始智能对话吧！<br><br>
-          <em>💡 提示：DeepSeek目前提供免费额度，注册即可获取API密钥</em>
+    <!-- 对话区域 -->
+    <div class="chat-area" id="chatArea">
+      <div class="message assistant">
+        <div class="msg-avatar"><i class="fas fa-feather-alt"></i></div>
+        <div class="msg-bubble">
+          日安。<br><br>
+          我是<span style="color: var(--accent-dark); font-weight: 500;">荣县百事通</span>，一个植根于川南的AI助手。<br>
+          无论你想探寻荣县大佛的千年古韵，品尝地道豆花的嫩滑鲜香，<br>
+          或是聊聊其他任何话题——我都在这里。<br><br>
+          <span style="color: var(--text-tertiary); font-size: 0.82rem;">配置API密钥后即可开始对话。</span>
         </div>
       </div>
     </div>
 
     <!-- 输入区域 -->
     <div class="input-area">
-      <div class="input-wrapper">
+      <div class="input-row">
         <textarea 
           id="userInput" 
-          placeholder="输入您的问题... (Enter发送，Shift+Enter换行)" 
+          placeholder="提问任何话题，或聊聊荣县..." 
           rows="1"
         ></textarea>
-        <div class="action-buttons">
-          <button class="icon-btn clear-btn" id="clearChatBtn" title="清空对话">
-            <i class="fas fa-trash-alt"></i>
-          </button>
-          <button class="icon-btn send-btn" id="sendBtn" title="发送消息">
-            <i class="fas fa-paper-plane"></i>
-          </button>
-        </div>
+        <button class="icon-btn btn-clear" id="clearChatBtn" title="清空对话">
+          <i class="fas fa-undo-alt"></i>
+        </button>
+        <button class="icon-btn btn-send" id="sendBtn" title="发送">
+          <i class="fas fa-arrow-up"></i>
+        </button>
       </div>
-      <div class="safety-note">
-        <i class="fas fa-lock"></i>
-        端到端加密 · API密钥本地存储 · 内容安全过滤
+      <div class="footer-note">
+        本地存储 · 端到端加密 · <span>荣县</span>
       </div>
     </div>
   </div>
 
   <script>
     (function() {
-      // ============ 安全配置 ============
-      const SAFETY_RULES = {
-        maxInputLength: 4000,
+      // ============ 荣县知识库 ============
+      const RONGXIAN_CONTEXT = {
+        overview: "荣县，古称荣州，位于四川盆地南部，隶属自贡市。这里是千年古县，世界第一大释迦牟尼佛石刻像——荣县大佛的所在地，也是中国诗书之乡。",
+        highlights: [
+          { name: "荣县大佛", detail: "唐代凿刻，通高36.67米，全国重点文物保护单位，气势恢宏。" },
+          { name: "高石梯森林公园", detail: "国家AAAA级景区，森林覆盖率98%，清幽宁静的天然氧吧。" },
+          { name: "吴玉章故居", detail: "近代教育家、革命家吴玉章的出生地，文脉悠长。" },
+          { name: "荣县豆花", detail: "嫩滑细腻，佐以秘制蘸水，是荣县人引以为傲的日常至味。" },
+          { name: "荣县羊肉汤", detail: "汤色乳白，肉质鲜醇，冬日里一碗下肚，暖彻心扉。" },
+          { name: "荣县板鸭", detail: "传统工艺腌制，色泽金红，肉质紧实，越嚼越香。" },
+        ]
+      };
+
+      function buildSystemPrompt() {
+        return `你叫"荣县百事通"，是一位温文尔雅、博学多识的AI助手，对四川荣县怀有深厚感情。
+
+你对荣县的了解：
+${RONGXIAN_CONTEXT.highlights.map(h => `- ${h.name}：${h.detail}`).join('\n')}
+
+你的风格：
+- 谈吐文雅、从容，像一位有修养的本地学者
+- 对荣县话题充满热忱，娓娓道来，细节丰富
+- 对其他话题同样认真对待，知无不言
+- 适度使用东方美学意象，但不矫揉造作
+- 回答简洁有力，不啰嗦
+- 始终使用中文
+
+若遇不当请求，温和而坚定地拒绝。`;
+      }
+
+      // ============ 安全过滤 ============
+      const SAFETY = {
+        maxLength: 4000,
         blockedPatterns: [
           /delete\s+from|drop\s+table|exec\s*\(|eval\s*\(/gi,
           /<script|javascript:|onerror=|onclick=/gi,
-          /system\s*\(|passthru\s*\(|shell_exec\s*\(/gi,
         ],
-        sensitiveKeywords: ['自杀', '自残', '制造炸弹', '黑客攻击', '非法入侵'],
+        sensitiveWords: ['自杀', '自残', '制造炸弹', '黑客攻击', '非法入侵'],
       };
 
-      // 安全过滤函数
-      function safetyFilter(input) {
-        let cleaned = input.trim();
-        
-        // 长度限制
-        if (cleaned.length > SAFETY_RULES.maxInputLength) {
-          cleaned = cleaned.substring(0, SAFETY_RULES.maxInputLength);
+      function safetyCheck(input) {
+        let cleaned = input.trim().substring(0, SAFETY.maxLength);
+        for (let p of SAFETY.blockedPatterns) {
+          if (p.test(cleaned)) return { safe: false, msg: '此内容被安全策略拦截。' };
         }
-        
-        // 检查危险模式
-        for (let pattern of SAFETY_RULES.blockedPatterns) {
-          if (pattern.test(cleaned)) {
-            return { safe: false, message: '检测到潜在危险代码，已阻止发送' };
-          }
+        for (let w of SAFETY.sensitiveWords) {
+          if (cleaned.includes(w)) return { safe: false, msg: '请保持友善与文明的交流。' };
         }
-        
-        // 检查敏感词
-        for (let keyword of SAFETY_RULES.sensitiveKeywords) {
-          if (cleaned.includes(keyword)) {
-            return { safe: false, message: '请保持友善对话，避免敏感内容' };
-          }
-        }
-        
-        // 转义HTML（防XSS）
-        cleaned = cleaned
-          .replace(/&/g, '&amp;')
-          .replace(/</g, '&lt;')
-          .replace(/>/g, '&gt;')
-          .replace(/"/g, '&quot;')
-          .replace(/'/g, '&#039;');
-        
+        cleaned = cleaned.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
         return { safe: true, cleaned };
       }
 
-      // ============ API 配置 ============
-      const API_CONFIGS = {
-        deepseek: {
-          url: 'https://api.deepseek.com/v1/chat/completions',
-          model: 'deepseek-chat',
-          headers: (apiKey) => ({
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${apiKey}`
-          })
-        },
-        openai: {
-          url: 'https://api.openai.com/v1/chat/completions',
-          model: 'gpt-3.5-turbo',
-          headers: (apiKey) => ({
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${apiKey}`
-          })
-        },
-        custom: {
-          url: localStorage.getItem('custom_api_url') || '',
-          model: 'default',
-          headers: (apiKey) => ({
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${apiKey}`
-          })
-        }
+      // ============ API配置 ============
+      const API = {
+        deepseek: { url: 'https://api.deepseek.com/v1/chat/completions', model: 'deepseek-chat' },
+        openai: { url: 'https://api.openai.com/v1/chat/completions', model: 'gpt-3.5-turbo' },
+        custom: { url: () => localStorage.getItem('custom_api_url') || '', model: 'default' },
       };
 
-      // ============ 状态管理 ============
-      let conversationHistory = [];
-      let currentApiKey = localStorage.getItem('ai_api_key') || '';
-      let currentProvider = localStorage.getItem('ai_provider') || 'deepseek';
-      
-      // ============ UI 元素 ============
-      const chatMessages = document.getElementById('chatMessages');
-      const userInput = document.getElementById('userInput');
-      const sendBtn = document.getElementById('sendBtn');
-      const clearChatBtn = document.getElementById('clearChatBtn');
-      const apiKeyInput = document.getElementById('apiKeyInput');
-      const providerSelect = document.getElementById('providerSelect');
-      const saveApiKeyBtn = document.getElementById('saveApiKeyBtn');
-      const connectionStatus = document.getElementById('connectionStatus');
-
-      // 初始化
-      function init() {
-        apiKeyInput.value = currentApiKey;
-        providerSelect.value = currentProvider;
-        updateConnectionStatus();
-        loadConversation();
+      function apiHeaders(key) {
+        return { 'Content-Type': 'application/json', 'Authorization': `Bearer ${key}` };
       }
 
-      // 更新连接状态
-      function updateConnectionStatus() {
-        const statusDot = connectionStatus.querySelector('.status-dot');
-        const statusText = connectionStatus.querySelector('span:last-child');
-        
-        if (currentApiKey) {
-          statusDot.style.background = '#48bb78';
-          statusText.textContent = '已配置密钥';
-          connectionStatus.style.color = '#48bb78';
+      // ============ 状态 ============
+      let history = [];
+      let apiKey = localStorage.getItem('ai_api_key') || '';
+      let provider = localStorage.getItem('ai_provider') || 'deepseek';
+
+      const $chat = document.getElementById('chatArea');
+      const $input = document.getElementById('userInput');
+      const $send = document.getElementById('sendBtn');
+      const $clear = document.getElementById('clearChatBtn');
+      const $apiKeyInput = document.getElementById('apiKeyInput');
+      const $provider = document.getElementById('providerSelect');
+      const $saveKey = document.getElementById('saveApiKeyBtn');
+      const $statusDot = document.getElementById('statusDot');
+      const $statusText = document.getElementById('statusText');
+
+      function updateStatus() {
+        if (apiKey) {
+          $statusDot.className = 'dot';
+          $statusText.textContent = '已连接';
         } else {
-          statusDot.style.background = '#f56565';
-          statusText.textContent = '未配置密钥';
-          connectionStatus.style.color = '#f56565';
+          $statusDot.className = 'dot offline';
+          $statusText.textContent = '待配置';
         }
       }
 
-      // 保存API密钥
-      function saveApiKey() {
-        const key = apiKeyInput.value.trim();
-        const provider = providerSelect.value;
-        
-        if (key) {
-          localStorage.setItem('ai_api_key', key);
-          localStorage.setItem('ai_provider', provider);
-          currentApiKey = key;
-          currentProvider = provider;
-          updateConnectionStatus();
-          addSystemMessage('✅ API密钥已保存，可以开始智能对话了！');
-        } else {
-          addSystemMessage('⚠️ 请输入有效的API密钥');
-        }
+      function scrollDown() {
+        requestAnimationFrame(() => { $chat.scrollTop = $chat.scrollHeight; });
       }
 
-      // 添加系统消息
-      function addSystemMessage(content) {
-        const row = document.createElement('div');
-        row.className = 'message-row assistant';
-        row.innerHTML = `
-          <div class="avatar"><i class="fas fa-info-circle"></i></div>
-          <div class="bubble" style="background: #f0f4ff; color: #667eea;">${content}</div>
-        `;
-        chatMessages.appendChild(row);
-        scrollToBottom();
+      function addMessage(role, text) {
+        const div = document.createElement('div');
+        div.className = `message ${role}`;
+        const icon = role === 'user' ? 'fa-user' : 'fa-feather-alt';
+        div.innerHTML = `<div class="msg-avatar"><i class="fas ${icon}"></i></div><div class="msg-bubble">${text.replace(/\n/g, '<br>')}</div>`;
+        $chat.appendChild(div);
+        scrollDown();
       }
 
-      // 添加消息
-      function addMessage(role, content) {
-        const row = document.createElement('div');
-        row.className = `message-row ${role}`;
-        
-        const avatarIcon = role === 'user' ? 'fa-user' : 'fa-robot';
-        row.innerHTML = `
-          <div class="avatar"><i class="fas ${avatarIcon}"></i></div>
-          <div class="bubble">${content.replace(/\n/g, '<br>')}</div>
-        `;
-        
-        chatMessages.appendChild(row);
-        scrollToBottom();
+      function addNotice(text) {
+        const div = document.createElement('div');
+        div.className = 'message assistant';
+        div.innerHTML = `<div class="msg-avatar"><i class="fas fa-info-circle"></i></div><div class="msg-bubble" style="background:#faf8f5;color:#7c6f64;border:1px solid #e8e4dd;">${text}</div>`;
+        $chat.appendChild(div);
+        scrollDown();
       }
 
-      // 显示打字动画
-      function showTypingIndicator() {
-        const typingDiv = document.createElement('div');
-        typingDiv.className = 'message-row assistant';
-        typingDiv.id = 'typingIndicator';
-        typingDiv.innerHTML = `
-          <div class="avatar"><i class="fas fa-robot"></i></div>
-          <div class="bubble">
-            <div class="typing-indicator">
-              <div class="typing-dot"></div>
-              <div class="typing-dot"></div>
-              <div class="typing-dot"></div>
-            </div>
-          </div>
-        `;
-        chatMessages.appendChild(typingDiv);
-        scrollToBottom();
+      let typingEl = null;
+      function showTyping() {
+        typingEl = document.createElement('div');
+        typingEl.className = 'message assistant';
+        typingEl.id = 'typingIndicator';
+        typingEl.innerHTML = `<div class="msg-avatar"><i class="fas fa-feather-alt"></i></div><div class="msg-bubble"><div class="typing-dots"><span></span><span></span><span></span></div></div>`;
+        $chat.appendChild(typingEl);
+        scrollDown();
       }
 
-      // 移除打字动画
-      function removeTypingIndicator() {
-        const indicator = document.getElementById('typingIndicator');
-        if (indicator) indicator.remove();
+      function hideTyping() {
+        if (typingEl) { typingEl.remove(); typingEl = null; }
       }
 
-      // 调用真实API
-      async function callAIAPI(userMessage) {
-        if (!currentApiKey) {
-          addSystemMessage('⚠️ 请先配置API密钥才能使用智能对话功能');
-          return null;
-        }
+      async function callAPI(userMsg) {
+        if (!apiKey) { addNotice('请先配置API密钥。'); return null; }
+        const cfg = API[provider];
+        const url = typeof cfg.url === 'function' ? cfg.url() : cfg.url;
+        if (!url) { addNotice('请设置自定义API地址。'); return null; }
 
-        const config = API_CONFIGS[currentProvider];
-        if (!config || !config.url) {
-          addSystemMessage('⚠️ API配置错误，请检查设置');
-          return null;
-        }
-
-        // 构建消息历史
         const messages = [
-          {
-            role: 'system',
-            content: '你是一个智能AI助手，请用中文回答用户问题。回答要详细、有帮助、友好。如果用户问危险或非法问题，请礼貌拒绝。'
-          },
-          ...conversationHistory.slice(-10), // 保留最近10轮对话
-          { role: 'user', content: userMessage }
+          { role: 'system', content: buildSystemPrompt() },
+          ...history.slice(-10),
+          { role: 'user', content: userMsg }
         ];
 
-        try {
-          const response = await fetch(config.url, {
-            method: 'POST',
-            headers: config.headers(currentApiKey),
-            body: JSON.stringify({
-              model: config.model,
-              messages: messages,
-              temperature: 0.7,
-              max_tokens: 2000,
-              stream: false
-            })
-          });
+        const res = await fetch(url, {
+          method: 'POST',
+          headers: apiHeaders(apiKey),
+          body: JSON.stringify({ model: cfg.model, messages, temperature: 0.7, max_tokens: 2000, stream: false })
+        });
 
-          if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.error?.message || `API请求失败 (${response.status})`);
-          }
-
-          const data = await response.json();
-          const aiResponse = data.choices[0]?.message?.content || '抱歉，我没有得到有效的回复';
-          
-          // 更新对话历史
-          conversationHistory.push(
-            { role: 'user', content: userMessage },
-            { role: 'assistant', content: aiResponse }
-          );
-          
-          // 保存对话历史
-          saveConversation();
-          
-          return aiResponse;
-        } catch (error) {
-          console.error('API调用错误:', error);
-          throw error;
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({}));
+          throw new Error(err.error?.message || `请求失败 (${res.status})`);
         }
+
+        const data = await res.json();
+        const reply = data.choices[0]?.message?.content || '未获取到回复。';
+        history.push({ role: 'user', content: userMsg }, { role: 'assistant', content: reply });
+        saveHistory();
+        return reply;
       }
 
-      // 处理发送消息
-      async function handleSendMessage() {
-        const rawInput = userInput.value;
-        if (!rawInput.trim()) return;
+      async function send() {
+        const raw = $input.value;
+        if (!raw.trim()) return;
 
-        // 安全检查
-        const safetyResult = safetyFilter(rawInput);
-        if (!safetyResult.safe) {
-          addSystemMessage(`🛡️ ${safetyResult.message}`);
-          userInput.value = '';
-          return;
-        }
+        const check = safetyCheck(raw);
+        if (!check.safe) { addNotice(check.msg); $input.value = ''; return; }
 
-        const userMessage = safetyResult.cleaned;
-        
-        // 显示用户消息
-        addMessage('user', userMessage);
-        userInput.value = '';
-        userInput.style.height = 'auto';
-        
-        // 检查API密钥
-        if (!currentApiKey) {
-          addSystemMessage('⚠️ 请先配置API密钥。推荐使用DeepSeek，注册即送免费额度！');
-          return;
-        }
+        addMessage('user', check.cleaned);
+        $input.value = '';
+        $input.style.height = 'auto';
 
-        // 显示打字动画
-        showTypingIndicator();
-        sendBtn.disabled = true;
+        if (!apiKey) { addNotice('请先配置API密钥，推荐使用DeepSeek。'); return; }
 
+        showTyping();
+        $send.disabled = true;
         try {
-          const aiResponse = await callAIAPI(userMessage);
-          removeTypingIndicator();
-          
-          if (aiResponse) {
-            addMessage('assistant', aiResponse);
-          }
-        } catch (error) {
-          removeTypingIndicator();
-          addSystemMessage(`❌ 错误: ${error.message || '调用AI失败，请检查API密钥和网络连接'}`);
-        } finally {
-          sendBtn.disabled = false;
-          userInput.focus();
-        }
-      }
-
-      // 保存对话历史
-      function saveConversation() {
-        try {
-          // 只保存最近20条消息以节省空间
-          const recentHistory = conversationHistory.slice(-20);
-          localStorage.setItem('ai_conversation', JSON.stringify(recentHistory));
+          const reply = await callAPI(check.cleaned);
+          hideTyping();
+          if (reply) addMessage('assistant', reply);
         } catch (e) {
-          console.warn('对话历史保存失败:', e);
+          hideTyping();
+          addNotice(`出错：${e.message}`);
+        } finally {
+          $send.disabled = false;
+          $input.focus();
         }
       }
 
-      // 加载对话历史
-      function loadConversation() {
+      function saveHistory() {
+        try { localStorage.setItem('ai_conversation', JSON.stringify(history.slice(-20))); } catch(e) {}
+      }
+
+      function loadHistory() {
         try {
           const saved = localStorage.getItem('ai_conversation');
           if (saved) {
-            conversationHistory = JSON.parse(saved);
-            // 显示最近的对话
-            const recentMessages = conversationHistory.slice(-6);
-            recentMessages.forEach(msg => {
-              if (msg.role === 'user' || msg.role === 'assistant') {
-                addMessage(msg.role, msg.content);
-              }
-            });
+            history = JSON.parse(saved);
+            history.slice(-6).forEach(m => { if (m.role === 'user' || m.role === 'assistant') addMessage(m.role, m.content); });
           }
-        } catch (e) {
-          console.warn('对话历史加载失败:', e);
-          conversationHistory = [];
-        }
+        } catch(e) { history = []; }
       }
 
-      // 清空对话
       function clearChat() {
-        if (confirm('确定要清空所有对话记录吗？')) {
-          conversationHistory = [];
+        if (confirm('清空对话记录？')) {
+          history = [];
           localStorage.removeItem('ai_conversation');
-          chatMessages.innerHTML = '';
-          addMessage('assistant', '对话已清空。我是智能AI助手，有什么可以帮助你的吗？✨');
+          $chat.innerHTML = '';
+          addMessage('assistant', '对话已清空。有什么想聊的？');
         }
       }
 
-      // 滚动到底部
-      function scrollToBottom() {
-        setTimeout(() => {
-          chatMessages.scrollTop = chatMessages.scrollHeight;
-        }, 100);
-      }
-
-      // 事件监听
-      sendBtn.addEventListener('click', handleSendMessage);
-      
-      userInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' && !e.shiftKey) {
-          e.preventDefault();
-          handleSendMessage();
+      // 事件
+      $send.addEventListener('click', send);
+      $input.addEventListener('keydown', e => {
+        if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
+      });
+      $input.addEventListener('input', () => {
+        $input.style.height = 'auto';
+        $input.style.height = Math.min($input.scrollHeight, 120) + 'px';
+      });
+      $clear.addEventListener('click', clearChat);
+      $saveKey.addEventListener('click', () => {
+        const k = $apiKeyInput.value.trim();
+        if (k) {
+          apiKey = k;
+          provider = $provider.value;
+          localStorage.setItem('ai_api_key', k);
+          localStorage.setItem('ai_provider', provider);
+          updateStatus();
+          addNotice('密钥已保存，随时可以开始对话。');
+        } else {
+          addNotice('请输入有效的API密钥。');
         }
       });
-
-      userInput.addEventListener('input', () => {
-        userInput.style.height = 'auto';
-        userInput.style.height = Math.min(userInput.scrollHeight, 120) + 'px';
-      });
-
-      clearChatBtn.addEventListener('click', clearChat);
-      saveApiKeyBtn.addEventListener('click', saveApiKey);
 
       // 初始化
-      init();
-      
-      console.log('✅ 智能AI助手已启动 | 支持DeepSeek/OpenAI | 安全过滤已激活');
-      console.log('💡 提示：获取DeepSeek API密钥: https://platform.deepseek.com/');
+      $apiKeyInput.value = apiKey;
+      $provider.value = provider;
+      updateStatus();
+      loadHistory();
     })();
   </script>
 </body>
